@@ -1,0 +1,16 @@
+package com.onlypankaj.movieinfoservice.controller;
+
+import com.onlypankaj.movieinfoservice.model.Movie;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/resource")
+public class MovieResource {
+
+    @RequestMapping("/{movieId}")
+    public Movie getMovieInfo(@PathVariable("movieId") String movieId) {
+        return new Movie(movieId,"Test");
+    }
+}
