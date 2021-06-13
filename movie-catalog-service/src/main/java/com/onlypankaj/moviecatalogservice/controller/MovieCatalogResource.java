@@ -34,7 +34,7 @@ public class MovieCatalogResource {
             // For Each Movie Id call movie info service and get details
             MovieResponse movieResponse = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), MovieResponse.class);
             //Put them all together
-            return new CatalogItem(movieResponse.getMovieTitle(), "trans", rating.getRating());
+            return new CatalogItem(movieResponse.getMovieTitle(), movieResponse.getDescription(), rating.getRating());
         })
                 .collect(Collectors.toList());
 /*
