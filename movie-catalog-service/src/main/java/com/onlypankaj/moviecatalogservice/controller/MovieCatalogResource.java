@@ -38,15 +38,15 @@ public class MovieCatalogResource {
         //Put them all together
         return ratingResponses.stream().map(rating -> {
 
-//            MovieResponse movieResponse = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), MovieResponse.class);
-
+            MovieResponse movieResponse = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), MovieResponse.class);
+/*
             MovieResponse movieResponse = webClientBuilder.build()
                     .get()
                     .uri("http://localhost:8082/movies/" + rating.getMovieId())
                     .retrieve()
                     .bodyToMono(MovieResponse.class)
                     .block();
-
+*/
             return new CatalogItem(movieResponse.getMovieTitle(), "trans", rating.getRating());
         })
                 .collect(Collectors.toList());
