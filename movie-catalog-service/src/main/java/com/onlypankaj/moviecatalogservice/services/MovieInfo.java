@@ -1,6 +1,7 @@
 package com.onlypankaj.moviecatalogservice.services;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.onlypankaj.moviecatalogservice.model.CatalogItem;
 import com.onlypankaj.moviecatalogservice.model.MovieResponse;
 import com.onlypankaj.moviecatalogservice.model.RatingResponse;
@@ -14,7 +15,12 @@ public class MovieInfo {
     @Autowired
     private RestTemplate restTemplate;
 
-    @HystrixCommand(fallbackMethod = "getFallBackCatalogItem")
+    @HystrixCommand(fallbackMethod = "getFallBackCatalogItem",
+            threadPoolKey = "movieInfoPool",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "20"),
+                    @HystrixProperty(name = "maxQueueSize", value = "10")
+            })
     public CatalogItem getCatalogItem(RatingResponse rating) {
         // For Each Movie Id call movie info service and get details
         MovieResponse movieResponse = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), MovieResponse.class);
