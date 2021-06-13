@@ -28,11 +28,11 @@ public class MovieCatalogResource {
 
         // Based on Userid call Rating data service to find list of Movie Ids and Ratings
         UserRatingResponse ratingsResponses = restTemplate.getForObject(
-                "http://localhost:8083/ratingsdata/users/"+ userId, UserRatingResponse.class);
+                "http://rating-data-service/ratingsdata/users/"+ userId, UserRatingResponse.class);
 
         return ratingsResponses.getUserRating().stream().map(rating -> {
             // For Each Movie Id call movie info service and get details
-            MovieResponse movieResponse = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), MovieResponse.class);
+            MovieResponse movieResponse = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), MovieResponse.class);
             //Put them all together
             return new CatalogItem(movieResponse.getMovieTitle(), "trans", rating.getRating());
         })
